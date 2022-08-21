@@ -55,6 +55,7 @@ class PostController extends Controller
 
                 $post = Post::create([
                     'title' => $request->title,
+                    'slug' => Str::slug($request->title),
                     'body' => $request->body,
                     'published' => $request->published,
                     'user_id' => $request->user_id,
@@ -85,6 +86,23 @@ class PostController extends Controller
     {
         try {
             $post = Post::with('users')->findOrFail($id);
+            return response()->json([
+                'status' => true,
+                'post' => $post
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+    public function detailPost($slug)
+    {
+        try {
+            $post = Post::with('users')
+                ->where('slug', $slug)
+                ->first();
             return response()->json([
                 'status' => true,
                 'post' => $post
@@ -130,6 +148,7 @@ class PostController extends Controller
                 $result = $post->update([
                     'user_id' => $request->user_id,
                     'title' => $request->title,
+                    'slug' => Str::slug($request->title),
                     'thumbnail' => $image_path,
                     'body' => $request->body,
                     'published' => $request->published,

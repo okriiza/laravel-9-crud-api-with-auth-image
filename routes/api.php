@@ -27,10 +27,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //Posts
     Route::controller(PostController::class)->group(function () {
         Route::get('/posts', 'index');
-        Route::get('/posts/{id}', 'show');
-        Route::post('/posts', 'store');
-        Route::patch('/posts/{id}', 'update');
-        Route::delete('/posts/{id}', 'destroy');
+        Route::get('/post/{id}', 'show');
+        Route::get('/post/detail/{slug}', 'detailPost');
+        Route::post('/post', 'store');
+        Route::patch('/post/{id}', 'update');
+        Route::delete('/post/{id}', 'destroy');
         Route::get('/search/{search}', 'searchPost');
     });
 });
